@@ -1,0 +1,83 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 600 300" width="100%" height="100%">
+  <defs>
+    <style>
+      .text-whizz {
+        font-family: 'Impact', 'Arial Black', sans-serif;
+        font-weight: 900;
+        font-size: 72px;
+        fill: #111111;
+        letter-spacing: 2px;
+      }
+      .text-kitchen {
+        font-family: 'Impact', 'Arial Black', sans-serif;
+        font-weight: 900;
+        font-size: 68px;
+        fill: #D33928;
+        letter-spacing: 3px;
+      }
+      .text-tagline {
+        font-family: 'Brush Script MT', 'Dancing Script', 'Georgia', cursive, serif;
+        font-size: 32px;
+        font-style: italic;
+        fill: #222222;
+      }
+    </style>
+  </defs>
+
+  <!-- Background -->
+  <rect width="100%" height="100%" fill="#ffffff" />
+
+  <g transform="translate(20, 20)">
+    <!-- WHIZZ (Part 1: WH) -->
+    <text x="30" y="120" class="text-whizz">WH</text>
+
+    <!-- FORK (Replaces the 'I' in WHIZZ) -->
+    <g transform="translate(170, 52) scale(0.85)">
+      <!-- Tines -->
+      <path d="M 4,0 L 4,28 M 10,0 L 10,28 M 16,0 L 16,28 M 22,0 L 22,28" stroke="#111111" stroke-width="3" stroke-linecap="round" />
+      <!-- Fork Head Base -->
+      <path d="M 3,25 Q 3,42 13,42 Q 23,42 23,25 Z" fill="#111111" />
+      <!-- Stem/Handle -->
+      <path d="M 11,40 C 11,55 10,70 11,85 C 12,90 15,95 13,100 C 11,102 12,105 13,105 L 13,105 C 14,105 15,102 13,100" fill="#111111" stroke="#111111" stroke-width="3" stroke-linejoin="round" stroke-linecap="round" />
+    </g>
+
+    <!-- WHIZZ (Part 2: ZZ) -->
+    <text x="195" y="120" class="text-whizz">ZZ</text>
+
+    <!-- SALAD BOWL & GREENS ICON -->
+    <g transform="translate(290, 45)">
+      <!-- Leaves / Veggies behind & inside bowl -->
+      <!-- Left leaf -->
+      <path d="M 25,45 Q 0,30 10,15 C 20,5 35,20 35,40 Z" fill="#111111" />
+      <path d="M 12,22 L 28,32" stroke="#ffffff" stroke-width="2" stroke-linecap="round" />
+      
+      <!-- Back main lettuce curve -->
+      <path d="M 30,35 C 30,10 55,0 75,10 C 90,0 110,15 110,35 Z" fill="#111111" />
+      <!-- Veins on center lettuce -->
+      <path d="M 65,38 L 65,12 M 65,25 L 52,15 M 65,20 L 78,12" stroke="#ffffff" stroke-width="3" stroke-linecap="round" />
+
+      <!-- Tomato Slice (Right) -->
+      <circle cx="105" cy="30" r="18" fill="#111111" />
+      <circle cx="105" cy="30" r="14" fill="#ffffff" />
+      <circle cx="105" cy="30" r="12" fill="#111111" />
+      <!-- Tomato seeds/segments -->
+      <path d="M 105,20 L 105,40 M 95,30 L 115,30" stroke="#ffffff" stroke-width="2" />
+
+      <!-- Cucumber / Slice (Center front) -->
+      <circle cx="80" cy="38" r="14" fill="#ffffff" stroke="#111111" stroke-width="4" />
+      <circle cx="80" cy="38" r="7" fill="#111111" />
+
+      <!-- Salad Bowl -->
+      <path d="M 5,45 L 140,45 C 135,85 105,100 72.5,100 C 40,100 10,85 5,45 Z" fill="#111111" />
+      <!-- Bowl Highlight Rim Rim -->
+      <path d="M 12,52 L 133,52 C 128,80 102,93 72.5,93 C 43,93 17,80 12,52 Z" fill="#111111" />
+      <path d="M 15,50 C 25,75 50,88 72.5,88" stroke="#ffffff" stroke-width="3" fill="none" stroke-linecap="round" opacity="0.3" />
+    </g>
+
+    <!-- KITCHEN -->
+    <text x="105" y="185" class="text-kitchen">KITCHEN</text>
+
+    <!-- TAGLINE -->
+    <text x="170" y="225" class="text-tagline">“Wholesome nourishment”</text>
+  </g>
+</svg>

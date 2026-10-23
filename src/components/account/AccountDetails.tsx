@@ -65,8 +65,8 @@ function ProfileForm({ customer }: { customer: Customer }) {
         value={form.phone}
         onChange={(e) => setForm({ ...form, phone: e.target.value })}
       />
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Saving..." : "Save changes"}
+           <Button type="submit" loading={isLoading}>
+        Save changes
       </Button>
     </form>
   );
@@ -96,6 +96,7 @@ function PasswordForm() {
       <Field
         label="Current password"
         type="password"
+        reveal
         required
         autoComplete="current-password"
         value={form.currentPassword}
@@ -104,6 +105,7 @@ function PasswordForm() {
       <Field
         label="New password"
         type="password"
+        reveal
         required
         minLength={8}
         autoComplete="new-password"
@@ -111,8 +113,8 @@ function PasswordForm() {
         value={form.newPassword}
         onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
       />
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Updating..." : "Update password"}
+           <Button type="submit" loading={isLoading}>
+        Update password
       </Button>
     </form>
   );
@@ -149,8 +151,8 @@ export default function AccountDetails() {
           <p className="font-sans text-sm text-primary-dark">
             Your email isn&apos;t verified yet. Check your inbox, or request a new link.
           </p>
-          <Button variant="secondary" onClick={handleResend} disabled={isResending}>
-            {isResending ? "Sending..." : "Resend email"}
+          <Button variant="secondary" onClick={handleResend} loading={isResending}>
+            Resend email
           </Button>
         </div>
       )}

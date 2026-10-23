@@ -24,7 +24,7 @@ export default function StorySection() {
           className="aspect-[4/3] md:aspect-square"
         />
         <div>
-          <p className="font-sans text-sm font-semibold text-accent uppercase tracking-wider mb-3">
+          <p className="font-sans text-sm font-semibold text-accent-text uppercase tracking-wider mb-3">
             Our story
           </p>
           <h2 className="font-display font-bold text-2xl md:text-3xl text-primary-dark mb-5">

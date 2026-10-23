@@ -104,8 +104,8 @@ export default function TrackOrderPage() {
               </p>
             )}
 
-            <Button type="submit" disabled={isLoading}>
-              {isLoading ? "Looking up..." : "Track order"}
+                        <Button type="submit" loading={isLoading}>
+              Track order
             </Button>
           </form>
         )}

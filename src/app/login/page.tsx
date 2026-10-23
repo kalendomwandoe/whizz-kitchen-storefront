@@ -51,6 +51,7 @@ export default function LoginPage() {
         <Field
           label="Password"
           type="password"
+          reveal
           required
           autoComplete="current-password"
           value={form.password}
@@ -63,13 +64,13 @@ export default function LoginPage() {
           </p>
         )}
 
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Logging in..." : "Log in"}
+                <Button type="submit" loading={isLoading}>
+          Log in
         </Button>
 
         <Link
           href="/forgot-password"
-          className="text-center font-sans text-sm font-semibold text-accent"
+          className="text-center font-sans text-sm font-semibold text-accent-text"
         >
           Forgot password?
         </Link>

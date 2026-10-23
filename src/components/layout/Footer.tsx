@@ -29,6 +29,14 @@ const COLUMNS = [
   },
 ];
 
+// Every footer link: 12px of padding above and below the text (a taller tap area),
+// a quick press shrink, and a keyboard ring that shows on the dark background.
+const linkClass =
+  "inline-block origin-left rounded-md py-1.5 " +
+  "transition-[scale,color] duration-(--duration-quick) ease-(--ease-out) " +
+  "hover:text-cream active:scale-97 active:text-cream motion-reduce:active:scale-100 " +
+  "focus-visible:outline-2 focus-visible:outline-transparent focus-visible:ring-2 focus-visible:ring-cream focus-visible:ring-offset-2 focus-visible:ring-offset-primary";
+
 export default function Footer() {
   return (
     <footer className="border-t border-cream/10 bg-primary text-cream">
@@ -37,36 +45,44 @@ export default function Footer() {
           <p className="font-display font-bold text-2xl">Whizz Kitchen</p>
           <p className="mt-1 font-sans text-cream/70">Bring the flavour.</p>
 
-          <div className="mt-4 flex flex-col gap-1 font-sans text-sm text-cream/80">
+          <div className="mt-3 flex flex-col items-start font-sans text-sm text-cream/80">
             {SITE.email && (
-              <a href={`mailto:${SITE.email}`} className="hover:text-cream">
+              <a href={`mailto:${SITE.email}`} className={linkClass}>
                 {SITE.email}
               </a>
             )}
             {SITE.phone && (
-              <a href={`tel:+${SITE.phone}`} className="hover:text-cream">
+              <a href={`tel:+${SITE.phone}`} className={linkClass}>
                 {formatPhoneDisplay(SITE.phone)}
               </a>
             )}
           </div>
         </div>
 
-        {COLUMNS.map((column) => (
-          <div key={column.title}>
-            <p className="mb-3 font-sans text-xs font-bold uppercase tracking-wider text-cream/50">
-              {column.title}
-            </p>
-            <ul className="flex flex-col gap-2 font-sans text-sm">
-              {column.links.map((link) => (
-                <li key={link.href}>
-                  <Link href={link.href} className="text-cream/80 hover:text-cream">
-                    {link.label}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+        {/* One navigation landmark for all three columns. On wide screens it spans the three
+            right-hand columns of the grid above; on phones it spans the full width. */}
+        <nav
+          aria-label="Footer"
+          className="col-span-2 grid grid-cols-2 gap-10 md:col-span-3 md:grid-cols-3"
+        >
+          {COLUMNS.map((column) => (
+            <div key={column.title}>
+              {/* A real heading, so screen-reader users can jump between footer sections */}
+              <h2 className="mb-2 font-sans text-xs font-bold uppercase tracking-wider text-cream/50">
+                {column.title}
+              </h2>
+              <ul className="flex flex-col items-start font-sans text-sm">
+                {column.links.map((link) => (
+                  <li key={link.href}>
+                    <Link href={link.href} className={`${linkClass} text-cream/80`}>
+                      {link.label}
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))}
+        </nav>
       </div>
 
       <div className="border-t border-cream/10">

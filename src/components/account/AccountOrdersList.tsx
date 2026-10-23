@@ -54,7 +54,7 @@ export default function AccountOrdersList({ onSelect, onNavigate }: AccountOrder
             </div>
             <div className="flex flex-col items-end gap-1 shrink-0">
               <OrderStatusBadge status={order.status} />
-              <p className="font-sans font-semibold text-sm text-accent">
+              <p className="font-sans font-semibold text-sm text-accent-text">
                 {formatPrice(order.totalAmount)}
               </p>
             </div>
@@ -64,7 +64,11 @@ export default function AccountOrdersList({ onSelect, onNavigate }: AccountOrder
 
       {data.pagination.totalPages > 1 && (
         <div className="flex items-center justify-between mt-6">
-          <Button variant="secondary" disabled={page <= 1} onClick={() => setPage((p) => p - 1)}>
+                    <Button
+            variant="secondary"
+            aria-disabled={page <= 1}
+            onClick={() => setPage((p) => p - 1)}
+          >
             Previous
           </Button>
           <span className="font-sans text-sm text-primary-dark/60">
@@ -72,7 +76,7 @@ export default function AccountOrdersList({ onSelect, onNavigate }: AccountOrder
           </span>
           <Button
             variant="secondary"
-            disabled={page >= data.pagination.totalPages}
+            aria-disabled={page >= data.pagination.totalPages}
             onClick={() => setPage((p) => p + 1)}
           >
             Next

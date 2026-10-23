@@ -1,5 +1,12 @@
 export const SITE = {
-  name: "Whizz Kitchen",
+   name: "Whizz Kitchen",
+  // The brand's own words, taken from the footer, home call-to-action and about page.
+  tagline: "Bring the flavour.",
+  description: "Fresh, made-to-order snacks and recipes. Bring the flavour.",
+  // Public address of the storefront. Set NEXT_PUBLIC_SITE_URL in .env.local and in production.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
+
+  
   email: process.env.NEXT_PUBLIC_CONTACT_EMAIL ?? "",
   // Falls back to the WhatsApp number unless a separate call line is set.
   phone: process.env.NEXT_PUBLIC_CONTACT_PHONE ?? process.env.NEXT_PUBLIC_WHATSAPP_NUMBER ?? "",

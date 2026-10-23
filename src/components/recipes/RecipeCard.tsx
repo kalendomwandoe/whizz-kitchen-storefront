@@ -44,7 +44,7 @@ export default function RecipeCard({ recipe, priority = false }: RecipeCardProps
         {recipe.description && (
           <p className="font-sans text-sm text-primary-dark/60 line-clamp-2">{recipe.description}</p>
         )}
-        <p className="font-sans text-xs font-semibold uppercase tracking-wide text-accent mt-1">
+        <p className="font-sans text-xs font-semibold uppercase tracking-wide text-accent-text mt-1">
           {plural(ingredientCount, "ingredient")} · {plural(stepCount, "step")}
         </p>
       </div>

@@ -10,6 +10,8 @@ export function useLogout() {
   const dispatch = useAppDispatch();
 
   return () => {
+    // Forget the saved login, or the next page load would sign this person straight back in.
+    localStorage.removeItem("customerToken");
     clearLastOrder();
     dispatch(closeAccountModal());
     dispatch(logout());

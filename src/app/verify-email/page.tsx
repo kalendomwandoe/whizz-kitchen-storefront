@@ -32,7 +32,7 @@ function VerifyEmailContent() {
     return (
       <p className="font-sans text-primary-dark/70">
         Your email is verified. Thank you!{" "}
-        <Link href="/" className="font-semibold text-accent">
+        <Link href="/" className="font-semibold text-accent-text">
           Back to the shop
         </Link>
       </p>

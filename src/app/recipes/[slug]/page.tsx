@@ -32,7 +32,7 @@ export default function RecipeDetailPage() {
     return (
       <div className="text-center py-24 px-4">
         <p className="font-sans text-primary-dark/70 mb-4">We couldn&apos;t find that recipe.</p>
-        <Link href="/recipes" className="font-sans font-semibold text-accent">
+        <Link href="/recipes" className="font-sans font-semibold text-accent-text">
           ← Back to recipes
         </Link>
       </div>
@@ -44,7 +44,7 @@ export default function RecipeDetailPage() {
 
   return (
     <div className={containerClass}>
-      <Link href="/recipes" className="font-sans text-sm font-semibold text-accent">
+      <Link href="/recipes" className="font-sans text-sm font-semibold text-accent-text">
         ← All recipes
       </Link>
 
@@ -78,7 +78,7 @@ export default function RecipeDetailPage() {
             {groups.map((group, i) => (
               <div key={`${group.heading ?? "ingredients"}-${i}`}>
                 {group.heading && (
-                  <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-accent mb-2">
+                  <h3 className="font-sans text-xs font-bold uppercase tracking-wider text-accent-text mb-2">
                     {group.heading}
                   </h3>
                 )}
@@ -114,7 +114,7 @@ export default function RecipeDetailPage() {
 
           {tips.length > 0 && (
             <div className="mt-8 rounded-xl border-l-4 border-accent bg-cream p-4">
-              <p className="font-sans text-xs font-bold uppercase tracking-wider text-accent mb-1">
+              <p className="font-sans text-xs font-bold uppercase tracking-wider text-accent-text mb-1">
                 {tips.length === 1 ? "Chef's tip" : "Chef's tips"}
               </p>
               {tips.map((tip, i) => (

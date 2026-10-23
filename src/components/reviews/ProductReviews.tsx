@@ -56,7 +56,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
                 <div className="flex items-center justify-between mt-4">
                   <Button
                     variant="secondary"
-                    disabled={page <= 1}
+                    aria-disabled={page <= 1}
                     onClick={() => setPage((p) => p - 1)}
                   >
                     Previous
@@ -66,7 +66,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
                   </span>
                   <Button
                     variant="secondary"
-                    disabled={page >= data.pagination.totalPages}
+                    aria-disabled={page >= data.pagination.totalPages}
                     onClick={() => setPage((p) => p + 1)}
                   >
                     Next

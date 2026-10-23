@@ -20,7 +20,7 @@ export default function SectionHeader({
         {text && <p className="font-sans text-primary-dark/70 mt-2 max-w-xl">{text}</p>}
       </div>
       {href && (
-        <Link href={href} className="font-sans font-semibold text-accent hover:underline shrink-0">
+        <Link href={href} className="font-sans font-semibold text-accent-text hover:underline shrink-0">
           {linkLabel} →
         </Link>
       )}
