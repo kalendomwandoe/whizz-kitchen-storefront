@@ -1,18 +1,216 @@
 @import "tailwindcss";
 
-@theme {
-  --color-primary: #1C1310;
-  --color-primary-dark: #120C0A;
-  --color-cream: #F7F2E9;
-  --color-cream-dark: #EFE4D1;
-  --color-accent: #C2572E;
+/* ==========================================================================
+   Whizz Kitchen design foundations
+   - @theme   : values that should become Tailwind classes (colours, type scale, fonts)
+   - :root    : plain variables (glass, layers, motion) that the media blocks can switch
+   ========================================================================== */
 
-  --font-sans: Arial, Helvetica, sans-serif;
-  /* Headings on the redesigned pages. To try a serif, change this one line, e.g.
-     Georgia, "Times New Roman", serif */
-  --font-display: Arial, Helvetica, sans-serif;
+@theme {
+  /* ---- Brand colours (unchanged) ---- */
+  --color-primary: #1c1310;
+  --color-primary-dark: #120c0a;
+  --color-cream: #f7f2e9;
+  --color-cream-dark: #efe4d1;
+  /* Brand orange. Use for fills, icons, big text. Only 4.0:1 on cream, too low for small text. */
+  --color-accent: #c2572e;
+
+  /* ---- New colour tokens ---- */
+  /* Darker orange for small text AND for button fills that carry cream text. 4.80:1 on cream. */
+  --color-accent-text: #b24b24;
+  /* Secondary text, a solid colour equal to primary-dark at 70% on cream. 7.0:1 on cream. */
+  --color-muted: #57514d;
+  /* Status colours: text/icon colour (-*) and its soft background (-*-bg). All 5.3:1 or better. */
+  --color-success: #1f6b3a;
+  --color-success-bg: #e3f1e7;
+  --color-warning: #7a5000;
+  --color-warning-bg: #fbefd2;
+  --color-danger: #b3261e;
+  --color-danger-bg: #fbe4e1;
+  --color-info: #1d5c8f;
+  --color-info-bg: #e1edf7;
+
+  /* ---- Fonts: the system's own, so it loads instantly and matches the device ---- */
+  --font-sans: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  --font-display: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+
+  /* ---- Type scale: role name -> size, leading (line-height), tracking (letter-spacing) ---- */
+  --text-display: clamp(2.25rem, 1.6rem + 3vw, 3.5rem);
+  --text-display--line-height: 1.05;
+  --text-display--letter-spacing: -0.02em;
+
+  --text-title: clamp(1.5rem, 1.25rem + 1.2vw, 2rem);
+  --text-title--line-height: 1.15;
+  --text-title--letter-spacing: -0.01em;
+
+  --text-body: 1rem;
+  --text-body--line-height: 1.5;
+  --text-body--letter-spacing: 0em;
+
+  --text-caption: 0.8125rem;
+  --text-caption--line-height: 1.4;
+  --text-caption--letter-spacing: 0.01em;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+/* --------------------------------------------------------------------------
+   Plain variables. The media blocks further down switch these.
+   -------------------------------------------------------------------------- */
+:root {
+  /* Glass: every translucent surface reads these, so one block can change them all */
+  --glass-bg: color-mix(in srgb, var(--color-cream) 72%, transparent);
+  --glass-blur: 1.25rem;
+  --glass-saturate: 1.6;
+  --glass-border: color-mix(in srgb, var(--color-primary) 10%, transparent);
+
+  /* Scrim: the dimming layer behind menus, sheets and modals */
+  --scrim-bg: color-mix(in srgb, var(--color-primary) 35%, transparent);
+  --scrim-blur: 0.25rem;
+
+  /* Layers, lowest to highest. Use as z-(--z-header) in class names. */
+  --z-content: 10;
+  --z-header: 40;
+  --z-scrim: 50;
+  --z-sheet: 60;
+  --z-toast: 70;
+
+  /* Header height (h-20 = 5rem, plus its 1px bottom border) */
+  --header-h: calc(5rem + 1px);
+
+  /* Motion timing for CSS transitions. Springs live in JavaScript (lib/motion.ts, next step). */
+  --duration-quick: 0.15s;
+  --duration-base: 0.3s;
+  --duration-slow: 0.5s;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+@layer base {
+  html {
+    font-optical-sizing: auto;
+    /* Anchor links and focus jumps stop below the sticky header, not under it */
+    scroll-padding-top: var(--header-h);
+  }
+}
+
+/* One class for every frosted surface:  <div className="glass border"> */
+@utility glass {
+  background-color: var(--glass-bg);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border-color: var(--glass-border);
+}
+
+/* One class for scrims:  <div className="scrim fixed inset-0"> */
+@utility scrim {
+  background-color: var(--scrim-bg);
+  -webkit-backdrop-filter: blur(var(--scrim-blur));
+  backdrop-filter: blur(var(--scrim-blur));
+}
+
+/* --------------------------------------------------------------------------
+   Accessibility switches (skill section 14)
+   -------------------------------------------------------------------------- */
+
+/* "Reduce motion": keep gentle cross-fades, drop travel and bounce */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --duration-quick: 0.1s;
+    --duration-base: 0.2s;
+    --duration-slow: 0.2s;
+    --ease-out: ease-out;
+  }
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* "Reduce transparency": solid surfaces, no blur */
+@media (prefers-reduced-transparency: reduce) {
+  :root {
+    --glass-bg: var(--color-cream);
+    --glass-blur: 0rem;
+    --glass-saturate: 1;
+    --scrim-bg: color-mix(in srgb, var(--color-primary) 55%, transparent);
+    --scrim-blur: 0rem;
+  }
+}
+
+/* "Increase contrast": near-solid surfaces with a visible border, darker text colours */
+@media (prefers-contrast: more) {
+  :root {
+    --glass-bg: color-mix(in srgb, var(--color-cream) 96%, transparent);
+    --glass-blur: 0rem;
+    --glass-saturate: 1;
+    --glass-border: var(--color-primary);
+    --scrim-bg: color-mix(in srgb, var(--color-primary) 60%, transparent);
+    --scrim-blur: 0rem;
+    --color-muted: var(--color-primary-dark);
+    --color-accent-text: #8f3a18;
+  }
+}
+
+/* --------------------------------------------------------------------------
+   Phase 6a: Hero slider
+   -------------------------------------------------------------------------- */
+
+/* One directional overlay keeps the copy readable without stacking two layers. */
+.hero-scrim {
+  background: linear-gradient(
+    90deg,
+    rgb(18 12 10 / 94%) 0%,
+    rgb(18 12 10 / 76%) 45%,
+    rgb(18 12 10 / 24%) 78%,
+    rgb(18 12 10 / 8%) 100%
+  );
+}
+
+/* The active dot fills using scaleX, so its layout width never animates. */
+@keyframes hero-progress {
+  from {
+    transform: scaleX(0);
+  }
+
+  to {
+    transform: scaleX(1);
+  }
+}
+
+.hero-progress-fill {
+  transform: scaleX(0);
+  animation: hero-progress 6.5s linear forwards;
+}
+
+/* Less motion: the slider's JavaScript already disables autoplay and travel. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-progress-fill {
+    animation: none;
+    transform: scaleX(1);
+  }
+}
+
+/* Less transparency: use a much more opaque scrim for predictable readability. */
+@media (prefers-reduced-transparency: reduce) {
+  .hero-scrim {
+    background: linear-gradient(
+      90deg,
+      #120c0a 0%,
+      #120c0a 48%,
+      rgb(18 12 10 / 96%) 100%
+    );
+  }
+}
+
+/* Higher contrast: strengthen the scrim and make the progress track clearer. */
+@media (prefers-contrast: more) {
+  .hero-scrim {
+    background: linear-gradient(
+      90deg,
+      #120c0a 0%,
+      rgb(18 12 10 / 96%) 58%,
+      rgb(18 12 10 / 82%) 100%
+    );
+  }
+
+  .hero-progress-fill {
+    outline: 1px solid var(--color-cream);
+  }
 }

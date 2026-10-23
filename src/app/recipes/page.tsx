@@ -35,7 +35,7 @@ export default function RecipesPage() {
           placeholder="Search recipes..."
           value={search}
           onChange={(e) => setSearch(e.target.value)}
-          className="w-full rounded-lg border border-cream/20 bg-white px-4 py-2.5 font-sans text-sm text-primary-dark placeholder:text-primary-dark/40 focus:border-accent focus:outline-none md:w-96"
+          className="w-full rounded-lg border border-cream/20 bg-white px-4 py-2.5 font-sans text-sm text-primary-dark placeholder:text-primary-dark/60 focus:border-accent focus:outline-none md:w-96"
         />
       </PageHero>
 
@@ -66,7 +66,7 @@ export default function RecipesPage() {
               <button
                 type="button"
                 onClick={() => setSearch("")}
-                className="font-sans font-semibold text-accent hover:underline"
+                className="font-sans font-semibold text-accent-text hover:underline"
               >
                 Clear search
               </button>

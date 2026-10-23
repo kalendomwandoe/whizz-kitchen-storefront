@@ -24,7 +24,7 @@ function ContactCard({ title, detail, description, href }: ContactCardProps) {
       href={href}
       className="flex flex-col gap-1 rounded-xl border border-primary/10 bg-white p-5 transition hover:border-primary hover:shadow-md"
     >
-      <span className="font-sans text-sm font-semibold text-accent">{title}</span>
+      <span className="font-sans text-sm font-semibold text-accent-text">{title}</span>
       <span className="break-words font-sans text-lg font-bold text-primary-dark">{detail}</span>
       <span className="font-sans text-sm text-primary-dark/60">{description}</span>
     </a>
@@ -74,11 +74,11 @@ export default function ContactPage() {
 
         <p className="mt-10 font-sans text-sm text-primary-dark/60">
           Looking for a quick answer? Try our{" "}
-          <Link href="/faq" className="font-semibold text-accent">
+          <Link href="/faq" className="font-semibold text-accent-text">
             FAQ
           </Link>
           . Already ordered?{" "}
-          <Link href="/track-order" className="font-semibold text-accent">
+          <Link href="/track-order" className="font-semibold text-accent-text">
             Track your order
           </Link>
           .

@@ -8,7 +8,7 @@ function Inner({ to, children }: { to: string; children: React.ReactNode }) {
   const redirect = useSearchParams().get("redirect");
   const href = redirect ? `${to}?redirect=${encodeURIComponent(redirect)}` : to;
   return (
-    <Link href={href} className="text-accent font-semibold">
+    <Link href={href} className="text-accent-text font-semibold ">
       {children}
     </Link>
   );
@@ -18,7 +18,7 @@ function Inner({ to, children }: { to: string; children: React.ReactNode }) {
 // someone who clicks "Register" from checkout still ends up back there.
 export default function AuthSwitchLink({ to, children }: { to: string; children: React.ReactNode }) {
   return (
-    <Suspense fallback={<span className="text-accent font-semibold">{children}</span>}>
+    <Suspense fallback={<span className="text-accent-text font-semibold">{children}</span>}>
       <Inner to={to}>{children}</Inner>
     </Suspense>
   );

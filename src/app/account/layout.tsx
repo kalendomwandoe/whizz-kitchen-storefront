@@ -4,6 +4,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useAuthRedirect } from "@/hooks/useAuthRedirect";
 import PageBand from "@/components/ui/PageBand";
+import Skeleton from "@/components/ui/Skeleton";
 
 const LINKS = [
   { href: "/account", label: "Overview" },
@@ -12,10 +13,20 @@ const LINKS = [
 ];
 
 export default function AccountLayout({ children }: { children: React.ReactNode }) {
-  const customer = useAuthRedirect();
+  const { customer } = useAuthRedirect();
   const pathname = usePathname();
 
-  if (!customer) return null;
+  // Still checking the saved login, or about to be sent to the login page:
+  // show a placeholder instead of a blank screen.
+  if (!customer) {
+    return (
+      <div role="status" className="mx-auto max-w-3xl px-4 py-8 md:px-6">
+        <span className="sr-only">Loading your account</span>
+        <Skeleton className="mb-6 h-10 w-48" />
+        <Skeleton className="h-40" />
+      </div>
+    );
+  }
 
   return (
     <>

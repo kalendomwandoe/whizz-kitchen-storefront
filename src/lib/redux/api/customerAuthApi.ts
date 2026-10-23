@@ -56,7 +56,8 @@ export const customerAuthApi = baseApi.injectEndpoints({
       invalidatesTags: ["Cart"],
     }),
     getCustomerProfile: builder.query<Customer, void>({
-      query: () => "/customers/auth/profile",
+            // "no-store": always ask the server, never reuse a saved copy (a cached 304 looks like a failure).
+      query: () => ({ url: "/customers/auth/profile", cache: "no-store" }),
       transformResponse: (response: { data: Customer }) => response.data,
       providesTags: ["Customer"],
     }),

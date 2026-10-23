@@ -8,7 +8,7 @@ interface AccountOrderDetailProps {
   onBack: () => void;
 }
 
-const backClass = "font-sans text-sm text-accent font-semibold";
+const backClass = "font-sans text-sm text-accent font-semibold text-accent-text";
 
 export default function AccountOrderDetail({ orderId, onBack }: AccountOrderDetailProps) {
   const { data: order, isLoading, isError } = useGetMyOrderQuery(orderId);

@@ -8,7 +8,7 @@ export default function OrderDetails({ order }: { order: Order }) {
     <div>
       <div className="flex items-center justify-between gap-4 mb-4">
         <div>
-          <h2 className="font-sans font-black text-xl text-primary-dark">
+                   <h2 className="font-display font-bold text-xl text-primary-dark">
             Order #{order.orderNumber}
           </h2>
           <p className="font-sans text-xs text-primary-dark/60">

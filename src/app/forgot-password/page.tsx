@@ -30,7 +30,7 @@ export default function ForgotPasswordPage() {
       title="Forgot password"
       text={sent ? undefined : "Enter your email and we'll send you a link to choose a new password."}
       footer={
-        <Link href="/login" className="font-semibold text-accent">
+        <Link href="/login" className="font-semibold text-accent-text">
           Back to log in
         </Link>
       }
@@ -45,6 +45,7 @@ export default function ForgotPasswordPage() {
           <Field
             label="Email"
             type="email"
+             reveal
             required
             autoComplete="email"
             value={email}
@@ -55,8 +56,8 @@ export default function ForgotPasswordPage() {
               {error}
             </p>
           )}
-          <Button type="submit" disabled={isLoading}>
-            {isLoading ? "Sending..." : "Send reset link"}
+                    <Button type="submit" loading={isLoading}>
+            Send reset link
           </Button>
         </form>
       )}

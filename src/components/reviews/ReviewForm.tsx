@@ -20,8 +20,11 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
   const dispatch = useAppDispatch();
   const customer = useAppSelector((state) => state.auth.customer);
   const [createReview, { isLoading }] = useCreateReviewMutation();
+  // null means "the person has not typed in the name box yet".
+  const [typedName, setTypedName] = useState<string | null>(null);
+  // Until they type, show the logged-in customer's name (whenever it arrives).
+  const authorName = typedName ?? customer?.name ?? "";
   const [form, setForm] = useState({
-    authorName: customer?.name ?? "",
     rating: 0,
     comment: "",
   });
@@ -39,7 +42,7 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
     try {
       await createReview({
         productId,
-        authorName: form.authorName.trim(),
+        authorName: authorName.trim(),
         rating: form.rating,
         comment: form.comment.trim() || undefined, // don't send an empty string
       }).unwrap();
@@ -74,14 +77,14 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
           maxLength={60}
           autoComplete="name"
           className={inputClass}
-          value={form.authorName}
-          onChange={(e) => setForm({ ...form, authorName: e.target.value })}
+          value={authorName}
+          onChange={(e) => setTypedName(e.target.value)}
         />
       </div>
 
       <div className="flex flex-col gap-1">
         <label htmlFor="review-comment" className="font-sans text-sm font-medium text-primary-dark">
-          Comment <span className="text-primary-dark/50 font-normal">(optional)</span>
+          Comment <span className="text-muted font-normal">(optional)</span>
         </label>
         <textarea
           id="review-comment"
@@ -91,15 +94,15 @@ export default function ReviewForm({ productId, onSubmitted }: ReviewFormProps) 
           value={form.comment}
           onChange={(e) => setForm({ ...form, comment: e.target.value })}
         />
-        <span className="font-sans text-xs text-primary-dark/50 text-right">
+        <span className="font-sans text-xs text-muted text-right">
           {form.comment.length}/1000
         </span>
       </div>
 
       {error && <p className="font-sans text-sm text-red-600">{error}</p>}
 
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Posting..." : "Post review"}
+            <Button type="submit" loading={isLoading}>
+        Post review
       </Button>
     </form>
   );

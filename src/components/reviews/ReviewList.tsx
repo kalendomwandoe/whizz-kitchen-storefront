@@ -13,7 +13,7 @@ export default function ReviewList({ reviews }: { reviews: Review[] }) {
                 {review.authorName}
               </span>
             </div>
-            <span className="font-sans text-xs text-primary-dark/50 shrink-0">
+            <span className="font-sans text-xs text-muted shrink-0">
               {new Date(review.createdAt).toLocaleDateString("en-GB", {
                 day: "numeric",
                 month: "short",

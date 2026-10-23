@@ -77,6 +77,7 @@ export default function RegisterPage() {
         <Field
           label="Password"
           type="password"
+            reveal
           required
           minLength={8}
           autoComplete="new-password"
@@ -91,8 +92,8 @@ export default function RegisterPage() {
           </p>
         )}
 
-        <Button type="submit" disabled={isLoading}>
-          {isLoading ? "Creating account..." : "Create account"}
+                <Button type="submit" loading={isLoading}>
+          Create account
         </Button>
       </form>
     </AuthCard>

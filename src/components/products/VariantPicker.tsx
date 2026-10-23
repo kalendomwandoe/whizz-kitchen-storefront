@@ -1,6 +1,10 @@
 "use client";
 
+import { useId, type ReactNode } from "react";
+import { motion } from "motion/react";
 import { ProductVariant } from "@/types/product";
+import { pickTransition, springs } from "@/lib/motion";
+import { usePrefersReducedMotion } from "@/hooks/usePrefersReducedMotion";
 
 interface VariantPickerProps {
   variants: ProductVariant[];
@@ -12,14 +16,52 @@ const isUnavailable = (v: ProductVariant) => v.isComingSoon || v.stock === 0;
 // Placeholder sizes are hidden until real ones are set
 const isPlaceholderSize = (size: string) => size.trim().toUpperCase() === "TBD";
 
-const optionClass = (isSelected: boolean, disabled: boolean) =>
-  `px-4 py-2 rounded-lg border font-sans text-sm font-medium transition-colors ${
-    isSelected
-      ? "bg-primary text-cream border-primary"
-      : "bg-white text-primary-dark border-primary/20 hover:border-primary"
-  } ${disabled ? "opacity-40 cursor-not-allowed" : ""}`;
+interface OptionButtonProps {
+  isSelected: boolean;
+  disabled: boolean;
+  onClick: () => void;
+  /** Buttons in the same row share this name, so the dark highlight can slide between them. */
+  group: string;
+  reduced: boolean;
+  children: ReactNode;
+}
+
+function OptionButton({ isSelected, disabled, onClick, group, reduced, children }: OptionButtonProps) {
+  return (
+    <button
+      type="button"
+      disabled={disabled}
+      aria-pressed={isSelected}
+      onClick={onClick}
+      className={`relative min-h-11 rounded-lg border px-4 py-2 font-sans text-sm font-medium transition-[scale,color,border-color] duration-(--duration-quick) ease-(--ease-out) enabled:active:scale-97 motion-reduce:enabled:active:scale-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-transparent focus-visible:ring-2 focus-visible:ring-primary-dark focus-visible:ring-offset-2 focus-visible:ring-offset-cream ${
+        isSelected
+          ? // the cream text waits a moment (the 0.12s), so it does not turn cream while the dark
+            // highlight is still sliding in and the background behind it is still white
+            "border-primary text-cream [transition-delay:0s,0.12s,0s]"
+          : "border-primary/20 bg-white text-primary-dark enabled:hover:border-primary"
+      } ${disabled ? "cursor-not-allowed opacity-40" : ""}`}
+    >
+      {/* The dark highlight. With a layoutId, motion slides it from the old choice to the new
+          one. With Reduce Motion on there is no layoutId, so it simply appears. */}
+      {isSelected && (
+        <motion.span
+          layoutId={reduced ? undefined : group}
+          transition={pickTransition(springs.default, reduced)}
+          // borderRadius goes in style so motion keeps the corners round while it stretches
+          style={{ borderRadius: 7 }}
+          className="absolute inset-0 bg-primary"
+          aria-hidden="true"
+        />
+      )}
+      <span className="relative">{children}</span>
+    </button>
+  );
+}
 
 export default function VariantPicker({ variants, selected, onSelect }: VariantPickerProps) {
+  const uid = useId();
+  const reduced = usePrefersReducedMotion();
+
   const colors = [
     ...new Set(variants.map((v) => v.color).filter((c): c is string => Boolean(c))),
   ];
@@ -48,16 +90,16 @@ export default function VariantPicker({ variants, selected, onSelect }: VariantP
             {colors.map((color) => {
               const disabled = variants.filter((v) => v.color === color).every(isUnavailable);
               return (
-                <button
+                <OptionButton
                   key={color}
-                  type="button"
+                  group={`${uid}-color`}
+                  reduced={reduced}
                   disabled={disabled}
-                  aria-pressed={color === activeColor}
+                  isSelected={color === activeColor}
                   onClick={() => pickColor(color)}
-                  className={optionClass(color === activeColor, disabled)}
                 >
                   {color}
-                </button>
+                </OptionButton>
               );
             })}
           </div>
@@ -70,22 +112,21 @@ export default function VariantPicker({ variants, selected, onSelect }: VariantP
             Size: <span className="font-normal">{selected?.size}</span>
           </p>
           <div className="flex flex-wrap gap-2">
-            {sizeVariants.map((variant) => {
-              const disabled = isUnavailable(variant);
-              return (
-                <button
-                  key={variant.id}
-                  type="button"
-                  disabled={disabled}
-                  aria-pressed={selected?.id === variant.id}
-                  onClick={() => onSelect(variant)}
-                  className={optionClass(selected?.id === variant.id, disabled)}
-                >
-                  {variant.size}
-                  {variant.isComingSoon ? " (Coming soon)" : variant.stock === 0 ? " (Out of stock)" : ""}
-                </button>
-              );
-            })}
+            {sizeVariants.map((variant) => (
+              <OptionButton
+                key={variant.id}
+                // Each colour has its own size row, so the highlight slides within a row and
+                // does not fly across when the colour changes.
+                group={`${uid}-size-${activeColor ?? "all"}`}
+                reduced={reduced}
+                disabled={isUnavailable(variant)}
+                isSelected={selected?.id === variant.id}
+                onClick={() => onSelect(variant)}
+              >
+                {variant.size}
+                {variant.isComingSoon ? " (Coming soon)" : variant.stock === 0 ? " (Out of stock)" : ""}
+              </OptionButton>
+            ))}
           </div>
         </div>
       )}

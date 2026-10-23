@@ -24,7 +24,7 @@ function ResetPasswordForm() {
     return (
       <p className="font-sans text-primary-dark/70">
         This reset link is invalid.{" "}
-        <Link href="/forgot-password" className="font-semibold text-accent">
+        <Link href="/forgot-password" className="font-semibold text-accent-text">
           Request a new one
         </Link>
       </p>
@@ -55,6 +55,7 @@ function ResetPasswordForm() {
       <Field
         label="New password"
         type="password"
+        reveal
         required
         minLength={8}
         autoComplete="new-password"
@@ -77,8 +78,8 @@ function ResetPasswordForm() {
           {error}
         </p>
       )}
-      <Button type="submit" disabled={isLoading}>
-        {isLoading ? "Updating..." : "Set new password"}
+            <Button type="submit" loading={isLoading}>
+        Set new password
       </Button>
     </form>
   );

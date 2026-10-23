@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import { usePathname } from "next/navigation";
+import { AnimatePresence } from "motion/react";
 import { useAppDispatch, useAppSelector } from "@/lib/redux/hooks";
 import { closeCart } from "@/lib/redux/slices/cartSlice";
 import { useGetCartQuery } from "@/lib/redux/api/cartApi";
@@ -15,7 +16,13 @@ export default function CartDrawer() {
   const dispatch = useAppDispatch();
   const pathname = usePathname();
   const isOpen = useAppSelector((state) => state.cartUi.isOpen);
-  const { data: cart, isLoading } = useGetCartQuery();
+  const authReady = useAppSelector((state) => state.auth.status === "ready");
+  // Wait until we know who is shopping, so the cart is fetched with the right identity.
+  const { data: cart, isLoading: isCartLoading } = useGetCartQuery(undefined, {
+    skip: !authReady,
+  });
+  // While the request is skipped, "no data yet" must not look like "empty cart".
+  const isLoading = isCartLoading || !authReady;
 
   const close = () => dispatch(closeCart());
   useEscapeKey(isOpen, close);
@@ -39,7 +46,7 @@ export default function CartDrawer() {
       <div
         role="dialog"
         aria-label="Your cart"
-        className="fixed top-20 right-4 z-50 flex max-h-[75vh] w-[92vw] max-w-sm flex-col rounded-xl border border-primary/10 bg-white shadow-xl"
+        className="fixed top-20 right-4 z-50 flex max-h-[75dvh] w-[92vw] max-w-sm flex-col rounded-xl border border-primary/10 bg-white shadow-xl"
       >
         <div className="flex items-center justify-between border-b border-primary/10 px-4 py-3">
           <h2 className="font-display font-bold text-lg text-primary-dark">
@@ -58,15 +65,27 @@ export default function CartDrawer() {
               <Skeleton className="h-16" />
               <Skeleton className="h-16" />
             </div>
-          ) : items.length === 0 ? (
-            <div className="py-10 text-center">
-              <p className="mb-4 font-sans text-sm text-primary-dark/60">Your cart is empty.</p>
-              <LinkButton href="/products" variant="secondary">
-                Browse the shop
-              </LinkButton>
-            </div>
           ) : (
-            items.map((item) => <CartItemRow key={item.id} item={item} />)
+            <>
+              {/* divide-y draws the line between rows. AnimatePresence keeps a removed row on
+                  screen while it folds away, then lets it go. */}
+              <div className="divide-y divide-primary/10">
+                <AnimatePresence initial={false}>
+                  {items.map((item) => (
+                    <CartItemRow key={item.id} item={item} />
+                  ))}
+                </AnimatePresence>
+              </div>
+
+              {items.length === 0 && (
+                <div className="py-10 text-center">
+                  <p className="mb-4 font-sans text-sm text-primary-dark/60">Your cart is empty.</p>
+                  <LinkButton href="/products" variant="secondary">
+                    Browse the shop
+                  </LinkButton>
+                </div>
+              )}
+            </>
           )}
         </div>
 
@@ -76,11 +95,11 @@ export default function CartDrawer() {
               <span>Subtotal</span>
               <span>{formatPrice(subtotal)}</span>
             </div>
-            <p className="mb-3 font-sans text-xs text-primary-dark/50">
+            <p className="mb-3 font-sans text-xs text-muted">
               Delivery fees are confirmed with you before you pay.
             </p>
-            <LinkButton href="/checkout" className="w-full">
-              Checkout
+                        <LinkButton href="/checkout" className="w-full">
+              Checkout <span aria-hidden="true">·</span> {formatPrice(subtotal)}
             </LinkButton>
           </div>
         )}
