@@ -13,9 +13,13 @@ export interface ReviewListResponse {
   pagination: { total: number; page: number; limit: number; totalPages: number };
 }
 
+// The reviewer's name comes from their account, so it is not sent.
 export interface CreateReviewInput {
   productId: string;
-  authorName: string;
   rating: number;
   comment?: string;
+}
+
+export interface ReviewEligibility {
+  canReview: boolean;
 }

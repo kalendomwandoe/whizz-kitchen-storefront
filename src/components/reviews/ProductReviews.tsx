@@ -77,8 +77,7 @@ export default function ProductReviews({ productId }: { productId: string }) {
           )}
         </div>
 
-        {/* Always shown, even if the list failed to load */}
-        <ReviewForm productId={productId} onSubmitted={() => setPage(1)} />
+               <ReviewForm productId={productId} onSubmitted={() => setPage(1)} />
       </div>
     </div>
   );
