@@ -1,5 +1,5 @@
 import { baseApi } from "./baseApi";
-import { CreateReviewInput, Review, ReviewListResponse } from "@/types/review";
+import { CreateReviewInput, Review, ReviewEligibility, ReviewListResponse } from "@/types/review";
 
 interface ProductReviewsParams {
   productId: string;
@@ -17,6 +17,13 @@ export const reviewApi = baseApi.injectEndpoints({
       transformResponse: (response: { data: ReviewListResponse }) => response.data,
       providesTags: (_result, _error, { productId }) => [{ type: "Review", id: productId }],
     }),
+
+    // Only for logged-in customers: has this customer ordered this product?
+    getReviewEligibility: builder.query<ReviewEligibility, string>({
+      query: (productId) => ({ url: "/reviews/eligibility", params: { productId } }),
+      transformResponse: (response: { data: ReviewEligibility }) => response.data,
+    }),
+
     createReview: builder.mutation<Review, CreateReviewInput>({
       query: (body) => ({ url: "/reviews", method: "POST", body }),
       // The backend wraps the new review as { review, message }
@@ -26,4 +33,8 @@ export const reviewApi = baseApi.injectEndpoints({
   }),
 });
 
-export const { useGetProductReviewsQuery, useCreateReviewMutation } = reviewApi;
+export const {
+  useGetProductReviewsQuery,
+  useGetReviewEligibilityQuery,
+  useCreateReviewMutation,
+} = reviewApi;
